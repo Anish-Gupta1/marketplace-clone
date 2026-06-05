@@ -3,22 +3,16 @@ import { prisma } from "@/lib/prisma";
 
 type Props = {
   params: Promise<{
-    slug: string;
+    city: string;
   }>;
 };
 
-export default async function CategoryPage({ params }: Props) {
-  const { slug } = await params;
-
-  const categoryName =
-  slug.charAt(0).toUpperCase() +
-  slug.slice(1);
+export default async function CityPage({ params }: Props) {
+  const { city } = await params;
 
   const listings = await prisma.listing.findMany({
     where: {
-      category: {
-        name: categoryName,
-      },
+      city,
     },
 
     include: {
@@ -28,7 +22,7 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <main className="max-w-7xl mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">{slug}</h1>
+      <h1 className="text-3xl font-bold mb-6">{city}</h1>
 
       <div className="grid md:grid-cols-3 gap-6">
         {listings.map((listing) => (

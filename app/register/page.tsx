@@ -1,4 +1,4 @@
-import { registerUser } from "../actions/auth";
+import { registerUser } from "../actions/register";
 
 export default function RegisterPage() {
   return (
