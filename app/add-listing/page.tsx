@@ -19,14 +19,37 @@ export default async function AddListingPage() {
     });
 
   return (
-    <div className="max-w-2xl mx-auto p-10">
-      <h1 className="text-3xl font-bold mb-6">
-        Add Listing
-      </h1>
+    <main className="min-h-screen bg-gray-50 px-4 py-12">
+      <div className="mx-auto max-w-2xl">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-gray-900">
+            Post Your Item
+          </h1>
+          <p className="mt-2 text-gray-600">
+            Fill in the details and sell your item quickly
+          </p>
+        </div>
 
-      <AddListingForm
-        categories={categories}
-      />
-    </div>
+        {/* Form Card */}
+        <div className="rounded-lg border border-gray-200 bg-white shadow-sm p-8">
+          <AddListingForm
+            categories={categories}
+          />
+        </div>
+
+        {/* Tips */}
+        <div className="mt-8 rounded-lg border border-blue-200 bg-blue-50 p-6">
+          <h3 className="font-semibold text-blue-900">💡 Tips for a great listing</h3>
+          <ul className="mt-3 space-y-2 text-sm text-blue-800">
+            <li>• Use clear, descriptive titles (e.g., "iPhone 15 Pro 256GB" instead of "Phone")</li>
+            <li>• Include all important details in the description</li>
+            <li>• Upload clear, well-lit photos</li>
+            <li>• Set a competitive price based on market rates</li>
+            <li>• Provide accurate location information</li>
+          </ul>
+        </div>
+      </div>
+    </main>
   );
 }

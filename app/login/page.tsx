@@ -49,53 +49,83 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6">
-      <h1 className="text-3xl font-bold mb-6">Login</h1>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md">
+        {/* Card */}
+        <div className="rounded-lg bg-white shadow-lg">
+          {/* Header */}
+          <div className="border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700 px-6 py-8 text-center text-white">
+            <h1 className="text-3xl font-bold">Login</h1>
+            <p className="mt-2 text-blue-100">Sign in to your account</p>
+          </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Email
-          </label>
-          <input
-            name="email"
-            type="email"
-            placeholder="you@example.com"
-            required
-            className="w-full border border-gray-300 px-3 py-2 rounded focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
-            disabled={isLoading}
-          />
+          {/* Form */}
+          <div className="p-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email Address
+                </label>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  required
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/10"
+                  disabled={isLoading}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Password
+                </label>
+                <input
+                  name="password"
+                  type="password"
+                  placeholder="••••••••"
+                  required
+                  className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/10"
+                  disabled={isLoading}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full rounded-lg bg-gradient-to-r from-blue-600 to-blue-700 py-3 font-semibold text-white transition hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isLoading ? "Signing in..." : "Sign In"}
+              </button>
+            </form>
+
+            {/* Divider */}
+            <div className="relative my-6">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="bg-white px-2 text-gray-500">or</span>
+              </div>
+            </div>
+
+            {/* Sign up link */}
+            <p className="text-center text-sm text-gray-600">
+              Don't have an account?{" "}
+              <Link href="/register" className="font-semibold text-blue-600 hover:text-blue-700">
+                Create one now
+              </Link>
+            </p>
+          </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Password
-          </label>
-          <input
-            name="password"
-            type="password"
-            placeholder="••••••••"
-            required
-            className="w-full border border-gray-300 px-3 py-2 rounded focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
-            disabled={isLoading}
-          />
+        {/* Footer link */}
+        <div className="mt-6 text-center">
+          <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">
+            ← Back to home
+          </Link>
         </div>
-
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full bg-black text-white py-2 rounded font-medium transition hover:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {isLoading ? "Logging in..." : "Login"}
-        </button>
-      </form>
-
-      <p className="mt-4 text-center text-sm text-gray-600">
-        Don't have an account?{" "}
-        <Link href="/register" className="text-black font-medium hover:underline">
-          Register here
-        </Link>
-      </p>
+      </div>
 
       {error && (
         <Toast

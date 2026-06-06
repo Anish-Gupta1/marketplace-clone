@@ -26,21 +26,35 @@ export default function ListingCard({
 
   return (
     <Link href={`/listing/${id}`}>
-      <div className="group overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
-        <div className="relative h-56 w-full">
+      <div className="group flex flex-col h-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition hover:shadow-lg hover:border-blue-300">
+        {/* Image container */}
+        <div className="relative h-48 w-full overflow-hidden bg-gray-100">
           <Image
-            src={imageSrc || "https://placehold.co/600x400?text=No+Image"}
+            src={imageSrc || "https://placehold.co/400x300?text=No+Image"}
             alt={title}
             fill
-            className="object-cover transition duration-300 group-hover:scale-105"
+            className="object-cover transition duration-300 group-hover:scale-110"
           />
+          {/* Badge */}
+          <div className="absolute top-2 right-2 rounded-full bg-blue-600 px-2 py-1 text-xs font-semibold text-white">
+            {category}
+          </div>
         </div>
 
-        <div className="space-y-2 p-4">
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <p className="text-xl font-bold">₹{price.toLocaleString()}</p>
-          <p className="text-sm text-gray-500">{category}</p>
-          <p className="text-sm text-gray-400">{city}</p>
+        {/* Content */}
+        <div className="flex flex-1 flex-col justify-between p-4">
+          <div>
+            <h2 className="line-clamp-2 text-base font-semibold text-gray-900 group-hover:text-blue-600">
+              {title}
+            </h2>
+          </div>
+
+          <div className="mt-4 space-y-2">
+            <div className="text-xl font-bold text-blue-600">
+              ₹{price.toLocaleString()}
+            </div>
+            <div className="text-sm text-gray-600">{city}</div>
+          </div>
         </div>
       </div>
     </Link>
