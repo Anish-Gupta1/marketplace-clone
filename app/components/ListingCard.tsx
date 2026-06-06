@@ -18,7 +18,6 @@ export default function ListingCard({
   imageUrl,
   category,
 }: ListingCardProps) {
-  // console.log("IMAGE URL:", imageUrl);
   const imageSrc =
     imageUrl &&
     (imageUrl.startsWith("http://") || imageUrl.startsWith("https://"))
@@ -27,21 +26,20 @@ export default function ListingCard({
 
   return (
     <Link href={`/listing/${id}`}>
-      <div className="border relative w-full h-48 rounded-lg overflow-hidden shadow hover:shadow-lg transition cursor-pointer">
-        <Image
-          src={imageSrc || "https://placehold.co/600x400?text=No+Image"}
-          alt={title}
-          fill
-          className="object-cover"
-        />
-        <p>{imageUrl}</p>
-        <div className="p-4">
-          <h2 className="font-bold text-lg">₹{price.toLocaleString()}</h2>
+      <div className="group overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+        <div className="relative h-56 w-full">
+          <Image
+            src={imageSrc || "https://placehold.co/600x400?text=No+Image"}
+            alt={title}
+            fill
+            className="object-cover transition duration-300 group-hover:scale-105"
+          />
+        </div>
 
-          <p className="font-medium">{title}</p>
-
-          <p className="text-gray-500">{category}</p>
-
+        <div className="space-y-2 p-4">
+          <h2 className="text-lg font-semibold">{title}</h2>
+          <p className="text-xl font-bold">₹{price.toLocaleString()}</p>
+          <p className="text-sm text-gray-500">{category}</p>
           <p className="text-sm text-gray-400">{city}</p>
         </div>
       </div>
