@@ -51,21 +51,33 @@ export default async function CategoryPage({ params }: Props) {
             <>
               <div className="mb-8">
                 <h2 className="text-2xl font-bold text-gray-900">
-                  {listings.length} {listings.length === 1 ? "listing" : "listings"} found
+                  {listings.length}{" "}
+                  {listings.length === 1 ? "listing" : "listings"} found
                 </h2>
               </div>
               <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {listings.map((listing) => (
-                  <ListingCard
-                    key={listing.id}
-                    id={listing.id}
-                    title={listing.title}
-                    price={listing.price}
-                    city={listing.city}
-                    imageUrl={listing.imageUrl}
-                    category={listing.category.name}
-                  />
-                ))}
+                {listings.map(
+                  (listing: {
+                    id: string;
+                    title: string;
+                    price: number;
+                    city: string;
+                    imageUrl: string | null;
+                    category: {
+                      name: string;
+                    };
+                  }) => (
+                    <ListingCard
+                      key={listing.id}
+                      id={listing.id}
+                      title={listing.title}
+                      price={listing.price}
+                      city={listing.city}
+                      imageUrl={listing.imageUrl}
+                      category={listing.category.name}
+                    />
+                  ),
+                )}
               </div>
             </>
           ) : (
@@ -77,7 +89,8 @@ export default async function CategoryPage({ params }: Props) {
                 No listings found.
               </h2>
               <p className="mt-2 text-gray-600">
-                There are no active listings in the {categoryName} category right now.
+                There are no active listings in the {categoryName} category
+                right now.
               </p>
               <Link
                 href="/"
