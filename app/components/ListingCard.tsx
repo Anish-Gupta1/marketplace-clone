@@ -18,23 +18,23 @@ export default function ListingCard({
   imageUrl,
   category,
 }: ListingCardProps) {
+  // console.log("IMAGE URL:", imageUrl);
   const imageSrc =
     imageUrl &&
     (imageUrl.startsWith("http://") || imageUrl.startsWith("https://"))
       ? imageUrl
       : "/no-image.png";
 
-      
   return (
     <Link href={`/listing/${id}`}>
-      <div className="border rounded-lg overflow-hidden shadow hover:shadow-lg transition cursor-pointer">
+      <div className="border relative w-full h-48 rounded-lg overflow-hidden shadow hover:shadow-lg transition cursor-pointer">
         <Image
           src={imageSrc || "https://placehold.co/600x400?text=No+Image"}
           alt={title}
           fill
           className="object-cover"
         />
-
+        <p>{imageUrl}</p>
         <div className="p-4">
           <h2 className="font-bold text-lg">₹{price.toLocaleString()}</h2>
 

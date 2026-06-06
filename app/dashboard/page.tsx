@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import Image from "next/image";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -40,18 +41,32 @@ export default async function DashboardPage() {
 
       <div className="grid md:grid-cols-3 gap-6">
         {listings.map((listing) => (
-          <div key={listing.id} className="border rounded-lg p-4">
-            <Link href={`/listing/${listing.id}`} className="font-bold text-lg">
-              {listing.title}
-            </Link>
+          <div key={listing.id} className="border rounded-lg overflow-hidden">
+            <div className="relative w-full h-48">
+              <Image
+                src={listing.imageUrl || "/no-image.png"}
+                alt={listing.title}
+                fill
+                className="object-cover"
+              />
+            </div>
 
-            <p>₹{listing.price.toLocaleString()}</p>
+            <div className="p-4">
+              <Link
+                href={`/listing/${listing.id}`}
+                className="font-bold text-lg"
+              >
+                {listing.title}
+              </Link>
 
-            <p>{listing.category.name}</p>
+              <p>₹{listing.price.toLocaleString()}</p>
 
-            <p>{listing.subCategory.name}</p>
+              <p>{listing.category.name}</p>
 
-            <p>{listing.city}</p>
+              <p>{listing.subCategory.name}</p>
+
+              <p>{listing.city}</p>
+            </div>
           </div>
         ))}
       </div>

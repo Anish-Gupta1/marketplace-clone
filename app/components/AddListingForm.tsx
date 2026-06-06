@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { createListing } from "@/app/actions/lisiting";
+import ImageUploader from "./ImageUploader";
 
 type Category = {
   id: string;
@@ -17,22 +18,17 @@ export default function AddListingForm({
 }: {
   categories: Category[];
 }) {
-  const [selectedCategory, setSelectedCategory] =
-    useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
 
   const subCategories = useMemo(() => {
-    const category = categories.find(
-      (c) => c.id === selectedCategory
-    );
+    const category = categories.find((c) => c.id === selectedCategory);
 
     return category?.subCategories ?? [];
   }, [selectedCategory, categories]);
 
   return (
-    <form
-      action={createListing}
-      className="flex flex-col gap-4"
-    >
+    <form action={createListing} className="flex flex-col gap-4">
       <input
         name="title"
         placeholder="Title"
@@ -83,30 +79,20 @@ export default function AddListingForm({
         className="border p-2 rounded"
       />
 
-      <input
-        name="imageUrl"
-        placeholder="Image URL"
-        className="border p-2 rounded"
-      />
+      <ImageUploader onUpload={setImageUrl} />
+      <input type="hidden" name="imageUrl" value={imageUrl} />
 
       <select
         name="categoryId"
         required
         value={selectedCategory}
-        onChange={(e) =>
-          setSelectedCategory(e.target.value)
-        }
+        onChange={(e) => setSelectedCategory(e.target.value)}
         className="border p-2 rounded"
       >
-        <option value="">
-          Select Category
-        </option>
+        <option value="">Select Category</option>
 
         {categories.map((category) => (
-          <option
-            key={category.id}
-            value={category.id}
-          >
+          <option key={category.id} value={category.id}>
             {category.name}
           </option>
         ))}
@@ -118,24 +104,16 @@ export default function AddListingForm({
         disabled={!selectedCategory}
         className="border p-2 rounded"
       >
-        <option value="">
-          Select SubCategory
-        </option>
+        <option value="">Select SubCategory</option>
 
         {subCategories.map((subCategory) => (
-          <option
-            key={subCategory.id}
-            value={subCategory.id}
-          >
+          <option key={subCategory.id} value={subCategory.id}>
             {subCategory.name}
           </option>
         ))}
       </select>
 
-      <button
-        type="submit"
-        className="bg-black text-white p-3 rounded"
-      >
+      <button type="submit" className="bg-black text-white p-3 rounded">
         Create Listing
       </button>
     </form>
