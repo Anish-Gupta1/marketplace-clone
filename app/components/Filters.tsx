@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 type CategoryOption = { id: string; name: string };
@@ -15,6 +14,14 @@ type FiltersProps = {
   initialSort?: string;
   categories: CategoryOption[];
   cityOptions: string[];
+  onFiltersChange?: (filters: {
+    search: string;
+    category: string;
+    city: string;
+    minPrice?: string;
+    maxPrice?: string;
+    sort: string;
+  }) => void;
 };
 
 export default function Filters({
@@ -26,42 +33,37 @@ export default function Filters({
   initialSort = "newest",
   categories,
   cityOptions,
+  onFiltersChange,
 }: FiltersProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-
   const [search, setSearch] = useState(initialSearch);
   const [category, setCategory] = useState(initialCategory);
   const [city, setCity] = useState(initialCity);
-  const [minPrice, setMinPrice] = useState(initialMinPrice ?? "");
-  const [maxPrice, setMaxPrice] = useState(initialMaxPrice ?? "");
+  const [minPrice, setMinPrice] = useState(
+    initialMinPrice !== undefined ? String(initialMinPrice) : "",
+  );
+  const [maxPrice, setMaxPrice] = useState(
+    initialMaxPrice !== undefined ? String(initialMaxPrice) : "",
+  );
   const [sort, setSort] = useState(initialSort);
 
   const debounceRef = useRef<number | null>(null);
 
-  function applyParams(params: Record<string, string | undefined>) {
-    const searchParams = new URLSearchParams();
-    Object.entries(params).forEach(([k, v]) => {
-      if (v !== undefined && v !== "") searchParams.set(k, v);
+  function notifyFiltersChange() {
+    onFiltersChange?.({
+      search,
+      category,
+      city,
+      minPrice: minPrice === "" ? undefined : minPrice,
+      maxPrice: maxPrice === "" ? undefined : maxPrice,
+      sort,
     });
-
-    const q = searchParams.toString();
-    const url = q ? `${pathname}?${q}` : pathname;
-    router.replace(url);
   }
 
   // Debounced search
   useEffect(() => {
     if (debounceRef.current) window.clearTimeout(debounceRef.current);
     debounceRef.current = window.setTimeout(() => {
-      applyParams({
-        search,
-        category,
-        city,
-        minPrice: minPrice === "" ? undefined : String(minPrice),
-        maxPrice: maxPrice === "" ? undefined : String(maxPrice),
-        sort,
-      });
+      notifyFiltersChange();
     }, 400);
 
     return () => {
@@ -72,14 +74,7 @@ export default function Filters({
 
   // Immediate apply for other controls
   useEffect(() => {
-    applyParams({
-      search,
-      category,
-      city,
-      minPrice: minPrice === "" ? undefined : String(minPrice),
-      maxPrice: maxPrice === "" ? undefined : String(maxPrice),
-      sort,
-    });
+    notifyFiltersChange();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, city, minPrice, maxPrice, sort]);
 

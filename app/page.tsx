@@ -1,6 +1,5 @@
 import Link from "next/link";
-import ListingCard from "@/app/components/ListingCard";
-import Filters from "@/app/components/Filters";
+import SearchableListings from "@/app/components/SearchableListings";
 import { prisma } from "@/lib/prisma";
 
 type HomePageProps = {
@@ -101,6 +100,15 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     orderBy,
   });
 
+  const initialListings = listings.map((listing) => ({
+    id: listing.id,
+    title: listing.title,
+    price: listing.price,
+    city: listing.city,
+    imageUrl: listing.imageUrl,
+    category: listing.category.name,
+  }));
+
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Hero Section */}
@@ -158,7 +166,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               : "Search & Filter"}
           </h2>
 
-          <Filters
+          <SearchableListings
             initialSearch={search}
             initialCategory={category}
             initialCity={city}
@@ -167,73 +175,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             initialSort={sort}
             categories={categories}
             cityOptions={cityOptions}
+            initialListings={initialListings}
           />
-        </div>
-      </section>
-
-      {/* Listings Section */}
-      <section className="px-4 py-12">
-        <div className="mx-auto max-w-7xl">
-          {listings.length > 0 ? (
-            <>
-              <div className="mb-6 flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  {search
-                    ? `Search results for "${search}"`
-                    : category
-                      ? `${category} listings`
-                      : city
-                        ? `Listings in ${city}`
-                        : "Latest Listings"}
-                </h2>
-                <p className="text-sm text-gray-600">
-                  {listings.length} results
-                </p>
-              </div>
-              <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {listings.map(
-                  (listing: {
-                    id: string;
-                    title: string;
-                    price: number;
-                    city: string;
-                    imageUrl: string | null;
-                    category: {
-                      name: string;
-                    };
-                  }) => (
-                    <ListingCard
-                      key={listing.id}
-                      id={listing.id}
-                      title={listing.title}
-                      price={listing.price}
-                      city={listing.city}
-                      imageUrl={listing.imageUrl}
-                      category={listing.category.name}
-                    />
-                  ),
-                )}
-              </div>
-            </>
-          ) : (
-            <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-6 py-16 text-center">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gray-200">
-                <span className="text-2xl">🔍</span>
-              </div>
-              <h2 className="mt-4 text-2xl font-semibold text-gray-900">
-                No listings found.
-              </h2>
-              <p className="mt-2 text-gray-600">
-                Try adjusting your search terms or browse all listings
-              </p>
-              <Link
-                href="/"
-                className="mt-6 inline-block rounded bg-blue-600 px-6 py-2 font-medium text-white transition hover:bg-blue-700"
-              >
-                Browse All Listings
-              </Link>
-            </div>
-          )}
         </div>
       </section>
     </main>
