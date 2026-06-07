@@ -1,4 +1,3 @@
-import type { Prisma } from "@prisma/client";
 import Link from "next/link";
 import ListingCard from "@/app/components/ListingCard";
 import Filters from "@/app/components/Filters";
@@ -47,12 +46,12 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     priceFilter.lte = maxPrice;
   }
 
-  const where: unknown = {
+  const where = {
     ...(search
       ? {
           title: {
             contains: search,
-            mode: "insensitive",
+            mode: "insensitive" as const,
           },
         }
       : {}),
@@ -62,7 +61,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
             is: {
               name: {
                 equals: category,
-                mode: "insensitive",
+                mode: "insensitive" as const,
               },
             },
           },
@@ -72,7 +71,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       ? {
           city: {
             equals: city,
-            mode: "insensitive",
+            mode: "insensitive" as const,
           },
         }
       : {}),
@@ -93,7 +92,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
           : { createdAt: "desc" as const };
 
   const listings = await prisma.listing.findMany({
-    where: where as Prisma.ListingWhereInput,
+    where,
     include: {
       category: true,
     },
