@@ -34,8 +34,12 @@ export default async function CityCategoryPage({ params }: Props) {
     <main className="max-w-7xl mx-auto p-8">
       <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold">{city} - {categoryName}</h1>
-          <p className="text-sm text-gray-600">Local listings for this city and category.</p>
+          <h1 className="text-3xl font-bold">
+            {city} - {categoryName}
+          </h1>
+          <p className="text-sm text-gray-600">
+            Local listings for this city and category.
+          </p>
         </div>
         <div className="flex flex-wrap gap-3 text-sm">
           <Link href={`/city/${city}`} className="transition hover:text-black">
@@ -49,17 +53,28 @@ export default async function CityCategoryPage({ params }: Props) {
 
       {listings.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-3">
-          {listings.map((listing) => (
-            <ListingCard
-              key={listing.id}
-              id={listing.id}
-              title={listing.title}
-              price={listing.price}
-              city={listing.city}
-              imageUrl={listing.imageUrl}
-              category={listing.category.name}
-            />
-          ))}
+          {listings.map(
+            (listing: {
+              id: string;
+              title: string;
+              price: number;
+              city: string;
+              imageUrl: string | null;
+              category: {
+                name: string;
+              };
+            }) => (
+              <ListingCard
+                key={listing.id}
+                id={listing.id}
+                title={listing.title}
+                price={listing.price}
+                city={listing.city}
+                imageUrl={listing.imageUrl}
+                category={listing.category.name}
+              />
+            ),
+          )}
         </div>
       ) : (
         <div className="rounded-3xl border border-dashed border-gray-300 bg-gray-50 p-12 text-center">
@@ -67,7 +82,10 @@ export default async function CityCategoryPage({ params }: Props) {
           <p className="text-sm text-gray-600 mb-4">
             There are no listings in {city} for {categoryName} yet.
           </p>
-          <Link href="/" className="rounded bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-900">
+          <Link
+            href="/"
+            className="rounded bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-900"
+          >
             Browse all listings
           </Link>
         </div>
