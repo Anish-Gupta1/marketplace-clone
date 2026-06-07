@@ -39,7 +39,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
   const cityOptions = citiesData
     .map((item: { city: string | null }) => item.city)
     .filter(Boolean) as string[];
-    
+
   const priceFilter: { gte?: number; lte?: number } = {};
   if (minPrice !== undefined && !Number.isNaN(minPrice)) {
     priceFilter.gte = minPrice;
@@ -132,7 +132,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               Browse Categories
             </h2>
             <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {categories.map((cat) => (
+              {categories.map((cat: { id: string; name: string }) => (
                 <Link
                   key={cat.id}
                   href={`/?category=${cat.name}`}
