@@ -12,21 +12,14 @@ type HomePageProps = {
 
 export default async function HomePage({ searchParams }: HomePageProps) {
   const params = await searchParams;
-  const search =
-    typeof params.search === "string" ? params.search : "";
-  const category =
-    typeof params.category === "string" ? params.category : "";
+  const search = typeof params.search === "string" ? params.search : "";
+  const category = typeof params.category === "string" ? params.category : "";
   const city = typeof params.city === "string" ? params.city : "";
   const minPrice =
-    typeof params.minPrice === "string"
-      ? Number(params.minPrice)
-      : undefined;
+    typeof params.minPrice === "string" ? Number(params.minPrice) : undefined;
   const maxPrice =
-    typeof params.maxPrice === "string"
-      ? Number(params.maxPrice)
-      : undefined;
-  const sort =
-    typeof params.sort === "string" ? params.sort : "newest";
+    typeof params.maxPrice === "string" ? Number(params.maxPrice) : undefined;
+  const sort = typeof params.sort === "string" ? params.sort : "newest";
 
   const categories = await prisma.category.findMany({
     orderBy: {
@@ -54,7 +47,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     priceFilter.lte = maxPrice;
   }
 
-  const where: any = {
+  const where: unknown = {
     ...(search
       ? {
           title: {
@@ -94,10 +87,10 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     sort === "oldest"
       ? { createdAt: "asc" as const }
       : sort === "price-low"
-      ? { price: "asc" as const }
-      : sort === "price-high"
-      ? { price: "desc" as const }
-      : { createdAt: "desc" as const };
+        ? { price: "asc" as const }
+        : sort === "price-high"
+          ? { price: "desc" as const }
+          : { createdAt: "desc" as const };
 
   const listings = await prisma.listing.findMany({
     where: where as Prisma.ListingWhereInput,
@@ -112,7 +105,9 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-blue-600 to-blue-800 px-4 py-12 text-white">
         <div className="mx-auto max-w-7xl">
-          <h1 className="text-4xl font-bold md:text-5xl">Find what you want locally</h1>
+          <h1 className="text-4xl font-bold md:text-5xl">
+            Find what you want locally
+          </h1>
           <p className="mt-2 text-lg text-blue-100">
             Browse thousands of listings or sell your own items in seconds
           </p>
@@ -127,9 +122,14 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
       {/* Category Grid */}
       {!search && !category && !city && (
-        <section id="categories" className="border-b border-gray-200 bg-white px-4 py-12">
+        <section
+          id="categories"
+          className="border-b border-gray-200 bg-white px-4 py-12"
+        >
           <div className="mx-auto max-w-7xl">
-            <h2 className="mb-8 text-2xl font-bold text-gray-900">Browse Categories</h2>
+            <h2 className="mb-8 text-2xl font-bold text-gray-900">
+              Browse Categories
+            </h2>
             <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {categories.map((cat) => (
                 <Link
@@ -138,7 +138,9 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                   className="rounded-lg border border-gray-200 bg-white p-4 text-center transition hover:border-blue-300 hover:shadow-md"
                 >
                   <div className="text-2xl">📦</div>
-                  <h3 className="mt-2 font-semibold text-gray-900">{cat.name}</h3>
+                  <h3 className="mt-2 font-semibold text-gray-900">
+                    {cat.name}
+                  </h3>
                 </Link>
               ))}
             </div>
@@ -150,7 +152,9 @@ export default async function HomePage({ searchParams }: HomePageProps) {
       <section className="border-b border-gray-200 bg-white px-4 py-8">
         <div className="mx-auto max-w-7xl">
           <h2 className="mb-6 text-xl font-bold text-gray-900">
-            {search || category || city ? "Refine Your Search" : "Search & Filter"}
+            {search || category || city
+              ? "Refine Your Search"
+              : "Search & Filter"}
           </h2>
 
           <Filters
@@ -176,25 +180,38 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                   {search
                     ? `Search results for "${search}"`
                     : category
-                    ? `${category} listings`
-                    : city
-                    ? `Listings in ${city}`
-                    : "Latest Listings"}
+                      ? `${category} listings`
+                      : city
+                        ? `Listings in ${city}`
+                        : "Latest Listings"}
                 </h2>
-                <p className="text-sm text-gray-600">{listings.length} results</p>
+                <p className="text-sm text-gray-600">
+                  {listings.length} results
+                </p>
               </div>
               <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {listings.map((listing) => (
-                  <ListingCard
-                    key={listing.id}
-                    id={listing.id}
-                    title={listing.title}
-                    price={listing.price}
-                    city={listing.city}
-                    imageUrl={listing.imageUrl}
-                    category={listing.category.name}
-                  />
-                ))}
+                {listings.map(
+                  (listing: {
+                    id: string;
+                    title: string;
+                    price: number;
+                    city: string;
+                    imageUrl: string | null;
+                    category: {
+                      name: string;
+                    };
+                  }) => (
+                    <ListingCard
+                      key={listing.id}
+                      id={listing.id}
+                      title={listing.title}
+                      price={listing.price}
+                      city={listing.city}
+                      imageUrl={listing.imageUrl}
+                      category={listing.category.name}
+                    />
+                  ),
+                )}
               </div>
             </>
           ) : (
@@ -202,7 +219,9 @@ export default async function HomePage({ searchParams }: HomePageProps) {
               <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gray-200">
                 <span className="text-2xl">🔍</span>
               </div>
-              <h2 className="mt-4 text-2xl font-semibold text-gray-900">No listings found.</h2>
+              <h2 className="mt-4 text-2xl font-semibold text-gray-900">
+                No listings found.
+              </h2>
               <p className="mt-2 text-gray-600">
                 Try adjusting your search terms or browse all listings
               </p>

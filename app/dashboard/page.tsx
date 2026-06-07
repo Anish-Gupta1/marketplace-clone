@@ -76,37 +76,48 @@ export default async function DashboardPage() {
                 </h2>
               </div>
               <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {listings.map((listing) => (
-                  <div
-                    key={listing.id}
-                    className="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition hover:shadow-md"
-                  >
-                    {/* Listing Card */}
-                    <div className="flex-1">
-                      <ListingCard
-                        id={listing.id}
-                        title={listing.title}
-                        price={listing.price}
-                        city={listing.city}
-                        imageUrl={listing.imageUrl}
-                        category={listing.category.name}
-                      />
-                    </div>
+                {listings.map(
+                  (listing: {
+                    id: string;
+                    title: string;
+                    price: number;
+                    city: string;
+                    imageUrl: string | null;
+                    category: {
+                      name: string;
+                    };
+                  }) => (
+                    <div
+                      key={listing.id}
+                      className="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition hover:shadow-md"
+                    >
+                      {/* Listing Card */}
+                      <div className="flex-1">
+                        <ListingCard
+                          id={listing.id}
+                          title={listing.title}
+                          price={listing.price}
+                          city={listing.city}
+                          imageUrl={listing.imageUrl}
+                          category={listing.category.name}
+                        />
+                      </div>
 
-                    {/* Actions */}
-                    <div className="border-t border-gray-200 p-4">
-                      <div className="flex items-center gap-2">
-                        <Link
-                          href={`/listing/${listing.id}`}
-                          className="flex-1 rounded-lg border border-blue-600 px-4 py-2 text-center text-sm font-medium text-blue-600 transition hover:bg-blue-50"
-                        >
-                          View
-                        </Link>
-                        <DeleteListingButton listingId={listing.id} />
+                      {/* Actions */}
+                      <div className="border-t border-gray-200 p-4">
+                        <div className="flex items-center gap-2">
+                          <Link
+                            href={`/listing/${listing.id}`}
+                            className="flex-1 rounded-lg border border-blue-600 px-4 py-2 text-center text-sm font-medium text-blue-600 transition hover:bg-blue-50"
+                          >
+                            View
+                          </Link>
+                          <DeleteListingButton listingId={listing.id} />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ),
+                )}
               </div>
             </>
           )}
