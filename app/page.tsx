@@ -36,7 +36,9 @@ export default async function HomePage({ searchParams }: HomePageProps) {
     },
   });
 
-  const cityOptions = citiesData.map((item) => item.city).filter(Boolean);
+  const cityOptions = citiesData
+    .map((item: { city: string | null }) => item.city)
+    .filter((city): city is string => Boolean(city));
 
   const priceFilter: { gte?: number; lte?: number } = {};
   if (minPrice !== undefined && !Number.isNaN(minPrice)) {
