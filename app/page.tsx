@@ -38,8 +38,8 @@ export default async function HomePage({ searchParams }: HomePageProps) {
 
   const cityOptions = citiesData
     .map((item: { city: string | null }) => item.city)
-    .filter((city): city is string => Boolean(city));
-
+    .filter(Boolean) as string[];
+    
   const priceFilter: { gte?: number; lte?: number } = {};
   if (minPrice !== undefined && !Number.isNaN(minPrice)) {
     priceFilter.gte = minPrice;
